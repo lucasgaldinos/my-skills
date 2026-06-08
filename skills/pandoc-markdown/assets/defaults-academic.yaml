@@ -1,0 +1,65 @@
+# Pandoc defaults file for academic XeLaTeX PDF output.
+# Usage:  pandoc -d defaults-academic.yaml input.md -o output.pdf
+# Docs:   references/defaults-files.md
+
+from: markdown
+to: pdf
+pdf-engine: xelatex
+
+# Citations
+citeproc: true
+# bibliography:   # Prefer to set this in the document's frontmatter so the .md is portable.
+#   - ./refs.bib
+# csl: ./abnt.csl
+
+# Table of contents
+toc: true
+toc-depth: 3
+number-sections: true
+
+# Math / highlighting
+highlight-style: tango
+# highlight-style: assets/styles/highlight-academic.theme   # Opt-in: muted, print-friendly KDE theme
+
+# Lua filters — paths are relative to the defaults file.
+# All entries below are OPT-IN (commented). Uncomment per-project as needed;
+# each filter's header comment documents its purpose, invocation and limits.
+filters: []
+lua-filters:
+  # - scripts/diagram.lua                      # pandoc-ext/diagram (Mermaid/PlantUML/TikZ)
+  # - scripts/beamer-table-fix.lua             # Beamer only: longtable → tabular
+  # - scripts/abstract-to-latex.lua            # LaTeX/beamer only: ::: {.abstract} → \begin{abstract}
+  # - scripts/figure-numbering.lua             # LaTeX/beamer only: auto fig:N identifiers
+  # - scripts/strip-raw-latex-for-html.lua     # HTML/EPUB only: \textbf{}/\emph{} → pandoc inlines
+  # - scripts/lang-span.lua                    # LaTeX/beamer only: [x]{lang=en} → \foreignlanguage
+
+# Extra LaTeX preamble (opt-in). Only applies for latex/pdf/beamer output.
+# include-in-header:
+#   - assets/styles/abnt-header.tex            # ABNT-flavoured margins, indentation, captions
+#   - assets/styles/beamer-thesis-theme.tex    # Beamer colour/footline override (only with -t beamer)
+
+# Extra CSS for HTML output (opt-in). Ignored for non-HTML targets.
+# css:
+#   - assets/styles/academic.css               # Serif body, numbered captions, justified paragraphs
+
+# Resource search path (colon-separated on Unix, semicolon on Windows)
+resource-path:
+  - .
+  - assets
+  - documents_tcc
+
+# Metadata overridable per-document
+metadata:
+  link-citations: true
+  linkcolor: blue
+  urlcolor: blue
+
+# Variables passed to the LaTeX template
+variables:
+  geometry: margin=2.5cm
+  fontsize: 12pt
+  linestretch: 1.5
+
+# Warnings
+verbosity: INFO
+fail-if-warnings: false

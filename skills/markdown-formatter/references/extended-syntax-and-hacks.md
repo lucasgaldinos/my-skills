@@ -20,7 +20,7 @@ Source: <https://www.markdownguide.org/extended-syntax/>
 
 - No indentation needed
 
-## Footnotes
+## Footnotes {id=footnotes}
 
 - Reference: `[^identifier]`
 - Definition: `[^identifier]: content`

@@ -1,0 +1,151 @@
+/* ============================================================================
+ * academic.css — Print-friendly typography for pandoc standalone HTML.
+ *
+ * Purpose:
+ *   Serif body, justified paragraphs, numbered figure/table captions, and a
+ *   readable max-width. Targets the default pandoc HTML5 writer structure
+ *   (no custom template required).
+ *
+ * Invocation (opt-in — NOT loaded by default):
+ *     pandoc input.md -s --katex --citeproc \
+ *       --css=../../assets/styles/academic.css \
+ *       -o output.html
+ *
+ * Limits:
+ *   * Assumes default pandoc HTML output shape (body > h1/h2 > p, figure,
+ *     table, div.references). If you use a custom --template=, selectors may
+ *     need adjustment.
+ *   * Figure numbering uses CSS counters (not pandoc-crossref). If you already
+ *     use pandoc-crossref, disable the counter rule to avoid double numbering.
+ *   * Web-safe font stack only — no @font-face. Embed fonts yourself if you
+ *     need a specific face.
+ *
+ * Filter order / interaction:
+ *   Not a filter. Applied by the browser after pandoc emits the HTML.
+ * ============================================================================ */
+
+/* --- Layout ------------------------------------------------------------- */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  max-width: 42rem;
+  margin: 2rem auto;
+  padding: 0 1rem 4rem;
+  font-family: "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: #fdfdfd;
+  counter-reset: figure table;
+}
+
+/* --- Typography --------------------------------------------------------- */
+p { text-align: justify; hyphens: auto; margin: 0 0 1em; }
+
+h1, h2, h3, h4 {
+  font-family: "Charter", Georgia, serif;
+  color: #1f497d;
+  line-height: 1.25;
+  margin-top: 1.6em;
+  margin-bottom: 0.4em;
+}
+h1 { font-size: 1.9rem; border-bottom: 1px solid #ccd; padding-bottom: 0.2em; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.2rem; }
+
+a { color: #1f497d; text-decoration: underline; }
+a:hover { color: #0b3d73; }
+
+/* --- Figures with numbered captions ------------------------------------ */
+figure { margin: 1.5em 0; text-align: center; }
+figure img { max-width: 100%; height: auto; }
+
+figure figcaption {
+  counter-increment: figure;
+  font-size: 0.92rem;
+  color: #444;
+  margin-top: 0.5em;
+  text-align: center;
+}
+figure figcaption::before {
+  content: "Figure " counter(figure) ". ";
+  font-weight: bold;
+}
+
+/* Tables --------------------------------------------------------------- */
+table {
+  border-collapse: collapse;
+  margin: 1.2em auto;
+  font-size: 0.95rem;
+}
+th, td {
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  padding: 0.35em 0.75em;
+  text-align: left;
+}
+th { border-bottom: 2px solid #333; background: #f4f4f4; }
+
+table caption {
+  counter-increment: table;
+  caption-side: top;
+  font-size: 0.92rem;
+  color: #444;
+  margin-bottom: 0.4em;
+}
+table caption::before {
+  content: "Table " counter(table) ". ";
+  font-weight: bold;
+}
+
+/* --- Code --------------------------------------------------------------- */
+code, pre {
+  font-family: "Source Code Pro", "DejaVu Sans Mono", Menlo, monospace;
+  font-size: 0.92em;
+}
+pre {
+  background: #f4f4f4;
+  padding: 0.8em 1em;
+  overflow-x: auto;
+  border-left: 3px solid #1f497d;
+}
+code { background: #f0f0f0; padding: 0.1em 0.3em; border-radius: 2px; }
+pre code { background: transparent; padding: 0; }
+
+/* --- Blockquotes -------------------------------------------------------- */
+blockquote {
+  border-left: 3px solid #888;
+  color: #444;
+  margin: 1em 0;
+  padding: 0.2em 1em;
+  font-style: italic;
+}
+
+/* --- Bibliography (citeproc div.references) ---------------------------- */
+.references {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #ccd;
+  font-size: 0.95rem;
+}
+.references .csl-entry {
+  margin-bottom: 0.6em;
+  text-indent: -1.5em;
+  padding-left: 1.5em;
+}
+
+/* --- Footnotes --------------------------------------------------------- */
+section.footnotes {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #ccd;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* --- Print -------------------------------------------------------------- */
+@media print {
+  body { max-width: none; margin: 0; color: #000; background: #fff; }
+  a { color: #000; text-decoration: none; }
+}

@@ -480,6 +480,9 @@ affect the rendering of content.
 
 ## `MD013` - Line length
 
+>[!important] Do not apply this rule.
+>**False by default**
+
 Tags: `line_length`
 
 Aliases: `line-length`
@@ -1899,14 +1902,14 @@ This rule is triggered when any of the strings in the `names` array do not have
 the specified capitalization. It can be used to enforce a standard letter case
 for the names of projects and products.
 
-For example, the language "JavaScript" is usually written with both the 'J' and
+For example, the language "javascript" is usually written with both the 'J' and
 'S' capitalized - though sometimes the 's' or 'j' appear in lower-case. To
 enforce the proper capitalization, specify the desired letter case in the
 `names` array:
 
 ```json
 [
-    "JavaScript"
+    "javascript"
 ]
 ```
 

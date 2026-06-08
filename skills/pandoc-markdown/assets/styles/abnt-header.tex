@@ -1,0 +1,79 @@
+% ============================================================================
+% abnt-header.tex — ABNT-flavoured LaTeX preamble for pandoc XeLaTeX theses
+%
+% Purpose:
+%   Provides margins, line spacing, indentation, caption style, and hyperref
+%   setup that approximate the ABNT NBR 14724 layout expected by most Brazilian
+%   universities. Tuned for a pandoc `documentclass: report` / `book` build.
+%
+% Invocation (opt-in — NOT loaded by default):
+%   In your document's YAML frontmatter:
+%       header-includes:
+%         - \input{../../assets/styles/abnt-header.tex}
+%   or with defaults file:
+%       include-in-header:
+%         - assets/styles/abnt-header.tex
+%
+% Limits:
+%   * Does NOT replace a full abntex2 class — only layout primitives. For
+%     cover/folha de rosto/ficha catalográfica, use the abntex2 class directly
+%     (see `documents_tcc/abntex2.cls`).
+%   * Assumes XeLaTeX or LuaLaTeX (uses fontspec-friendly assumptions). Do not
+%     combine with pdflatex.
+%   * Requires packages: geometry, setspace, indentfirst, titlesec, caption,
+%     hyperref — all present in a standard TeX Live install.
+%
+% Filter order / interaction:
+%   Not a filter. Pure LaTeX preamble. Must be included BEFORE any user
+%   \usepackage lines that also configure titlesec/caption/hyperref.
+% ============================================================================
+
+% --- Page geometry (ABNT: 3cm top/left, 2cm bottom/right) -------------------
+\usepackage[a4paper,top=3cm,left=3cm,bottom=2cm,right=2cm]{geometry}
+
+% --- Line spacing (ABNT body: 1.5) -----------------------------------------
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Paragraph indentation (ABNT body: 1.25cm; no extra vertical skip) -----
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\usepackage{indentfirst}  % indent the first paragraph after each heading too
+
+% --- Heading formatting (ABNT: bold, no italic, left-aligned) --------------
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\normalfont\bfseries\Large}{\thechapter}{1em}{}
+\titleformat{\section}{\normalfont\bfseries\large}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\bfseries\normalsize}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+% --- Caption formatting (ABNT: "Figura 1 — Legenda", sans-serif, small) ---
+\usepackage{caption}
+\captionsetup{
+  font=small,
+  labelsep=endash,      % "Figura 1 — Titulo"
+  labelfont=bf,
+  skip=6pt,
+  justification=centering,
+  singlelinecheck=true
+}
+
+% --- Hyperref (ABNT: NO coloured links in the printed PDF) -----------------
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=false,
+  pdfborder={0 0 0},
+  breaklinks=true
+}
+
+% --- Pandoc compatibility shims --------------------------------------------
+% pandoc emits \tightlist for single-paragraph list items; provide a no-op
+% definition so documents compile even without the pandoc LaTeX template.
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Beamer/hyperref: pandoc emits \phantomsection\label{...} after captioned
+% tables which triggers "Undefined control sequence \theHtable" in some
+% class/package combos. Providing a hyperref counter alias silences it.
+\providecommand{\theHtable}{\thetable}
+\providecommand{\theHfigure}{\thefigure}

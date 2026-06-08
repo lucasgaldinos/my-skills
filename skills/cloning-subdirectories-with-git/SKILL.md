@@ -150,3 +150,44 @@ git show origin/main:docs/tutorials/intro.md > intro.md
 ## Full reference
 
 For deeper details on each method, troubleshooting steps, and the full comparison table, see [references/cloning-git-subdirectories.md](references/cloning-git-subdirectories.md).
+
+```md
+### Searching Commands
+
+Linux offers various commands to search for files, directories, and text. Use these commands to search for files and directories on the system and filter the search using various patterns.
+
+| Command | Description |
+| --- | --- |
+| **`find [path] -name [search_pattern]`** | [Find files and directories](https://phoenixnap.com/kb/guide-linux-find-command) that match the specified pattern in a specified location. |
+| **`find [path] -size [+100M]`** | See files and directories larger than a specified size in a directory. |
+| **`fdfind [pattern] [path]`**[^fd-find] | Find files and directories, but much faster |
+| **`fdfind -s +100M [path]`**[^fd-find] | Find files and directories that match the specified pattern in a specified location. |
+| **`find . -type d -name "neovim"`** | Find a directory named `neovim` |
+| **`fdfind -t d neovim`** | Same, but much faster |
+| **`grep [search_pattern] [file_name]`** | [Search for a specific pattern](https://phoenixnap.com/kb/grep-multiple-strings) in a [file](https://phoenixnap.com/glossary/what-is-a-file) with [grep](https://phoenixnap.com/kb/grep-command-linux-unix-examples). |
+| **`grep -r [search_pattern] [directory_name]`** | Recursively search for a pattern in a directory. |
+| **`rg -r [search_pattern] [directory_name]`** | Recursively search for a pattern in a directory. |
+| **`locate [name]`** | [Locate all files and directories](https://phoenixnap.com/kb/locate-command-in-linux) related to a particular name. |
+| **`which [command]`** | [Search the command path](https://phoenixnap.com/kb/which-command-linux) in the **`$PATH`** environment variable. |
+| **`whereis [command]`** | Use the [whereis command](https://phoenixnap.com/kb/whereis-command-linux) to find the source, binary, and manual page for a command. |
+| **`awk '[search_pattern] {print $0}' [file_name]`** | [Print all lines matching a pattern](https://phoenixnap.com/kb/awk-command-in-linux) in a file. See also the [gawk command](https://phoenixnap.com/kb/gawk-linux), the [GNU](https://phoenixnap.com/glossary/what-is-gnu) version of **`awk`**. |
+| **`sed 's/[old_text]/[new_text]/' [file_name]`** | [Find and replace text](https://phoenixnap.com/kb/sed-replace) in a specified file. |
+
+[^fd-find]: Download this package with `sudo apt install fd-find`, but calling it with `fdfind` command. This is a faster version of `find` command. I deeply recommend using it in your workflows.
+
+### Directory Navigation Commands
+
+Directory navigation commands provide shortcuts to navigate to the desired location quickly. Below are several crucial shortcuts to remember when navigating directories in Linux through the terminal.
+
+| Directory Navigation Commands | Description |
+| --- | --- |
+| **`ls`** | [List files and directories](https://phoenixnap.com/kb/linux-ls-commands) in the current directory. |
+| **`ls -a`** | List all files and directories in the current directory ([shows hidden files](https://phoenixnap.com/kb/show-hidden-files-linux)). |
+| **`ls -l`** | List files and directories in long format. |
+| **`pwd`** | [Show the directory](https://phoenixnap.com/kb/pwd-linux) you are currently working in. |
+| **`cd`**   **`cd ~`** | [Change directory](https://phoenixnap.com/kb/linux-cd-command) to **`$HOME`**. |
+| **`cd ..`** | Move up one directory level. |
+| **`cd -`** | Change to the previous directory. |
+| **`cd [directory_path]`** | Change location to a specified directory. |
+| **`dirs`** | Show current directory stack. |
+```

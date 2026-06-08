@@ -2,6 +2,9 @@
 
 Comprehensive guide to prompt engineering techniques for Claude's latest models, covering clarity, examples, XML structuring, thinking, and agentic systems.
 
+> **XML tags quick reference for skill authors → [xml-tags.md](xml-tags.md)**
+> See that file for canonical tag names, type-specific patterns, nesting examples, and the HTML-collision warning.
+
 ---
 
 This is the single reference for prompt engineering with Claude's latest models, including Claude Opus 4.6, Claude Sonnet 4.6, and Claude Haiku 4.5. It covers foundational techniques, output control, tool use, thinking, and agentic systems. Jump to the section that matches your situation.

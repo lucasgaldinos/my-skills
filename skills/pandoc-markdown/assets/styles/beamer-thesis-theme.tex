@@ -1,0 +1,72 @@
+% ============================================================================
+% beamer-thesis-theme.tex — Beamer theme override for thesis / defense decks
+%
+% Purpose:
+%   Paste-in preamble that overrides a stock beamer theme (Madrid, Copenhagen,
+%   etc.) with academic typography: muted blue/gray palette, numbered captions,
+%   a custom footline (author • title • frame count), and a cleaner section
+%   divider page.
+%
+% Invocation (opt-in — NOT loaded by default):
+%   In your beamer .md frontmatter:
+%       theme: Madrid                     # pick any stock base theme first
+%       header-includes:
+%         - \input{../../assets/styles/beamer-thesis-theme.tex}
+%
+% Limits:
+%   * Assumes a base theme is already loaded (`theme:` in the YAML). This file
+%     overrides templates/colors; it is NOT a self-contained theme.
+%   * Footline layout tuned for `aspectratio=169`. On 4:3 the three columns
+%     may overlap — shorten the title or increase the footline height.
+%   * Does NOT change fonts. Use `\usepackage{fontspec}` + `\setmainfont{...}`
+%     in your own header-includes if the theme default is not desired.
+%
+% Filter order / interaction:
+%   Not a filter. Pure LaTeX preamble; order-independent among beamer overrides.
+% ============================================================================
+
+% --- Colour palette (muted academic blue/gray) -----------------------------
+\definecolor{thesisBlue}{RGB}{31, 73, 125}
+\definecolor{thesisGray}{RGB}{89,  89,  89}
+\definecolor{thesisLight}{RGB}{230,230,230}
+
+\setbeamercolor{structure}{fg=thesisBlue}
+\setbeamercolor{title}{fg=thesisBlue}
+\setbeamercolor{frametitle}{fg=thesisBlue}
+\setbeamercolor{section in toc}{fg=thesisBlue}
+\setbeamercolor{subsection in toc}{fg=thesisGray}
+\setbeamercolor{block title}{bg=thesisBlue,fg=white}
+\setbeamercolor{block body}{bg=thesisLight,fg=black}
+
+% --- Caption numbering (required for cross-refs to figures/tables) --------
+\setbeamertemplate{caption}[numbered]
+\setbeamerfont{caption}{size=\footnotesize}
+
+% --- Navigation symbols off (less visual noise) ----------------------------
+\setbeamertemplate{navigation symbols}{}
+
+% --- Section page override (minimalist divider) ----------------------------
+\setbeamertemplate{section page}{%
+  \begin{centering}
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=12pt,center]{part title}
+      \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+  \end{centering}
+}
+
+% --- Footline: author • short title • frame N / total ---------------------
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.46\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.20\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+      \usebeamerfont{date in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}

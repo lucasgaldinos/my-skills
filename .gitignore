@@ -1,0 +1,5 @@
+.env
+.skill-lock.json
+.vscode/
+*.log
+.rtk/

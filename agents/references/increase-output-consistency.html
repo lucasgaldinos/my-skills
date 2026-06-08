@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>increase-output-consistency</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="increase-output-consistency_files/libs/clipboard/clipboard.min.js"></script>
+<script src="increase-output-consistency_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="increase-output-consistency_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="increase-output-consistency_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="increase-output-consistency_files/libs/quarto-html/popper.min.js"></script>
+<script src="increase-output-consistency_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="increase-output-consistency_files/libs/quarto-html/anchor.min.js"></script>
+<link href="increase-output-consistency_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="increase-output-consistency_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="increase-output-consistency_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="increase-output-consistency_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="increase-output-consistency_files/libs/bootstrap/bootstrap-f9ec126dc76dd991dc8c3bf01ee84922.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="increase-output-consistency" class="level1">
+<h1>Increase output consistency</h1>
+<hr>
+<tip>
+<p><strong>For guaranteed JSON schema conformance</strong></p>
+<p>If you need Claude to always output valid JSON that conforms to a specific schema, use <a href="./docs/en/build-with-claude/structured-outputs">Structured Outputs</a> instead of the prompt engineering techniques below. Structured outputs provide guaranteed schema compliance and are specifically designed for this use case.</p>
+The techniques below are useful for general output consistency or when you need flexibility beyond strict JSON schemas.
+</tip>
+<p>Here’s how to make Claude’s responses more consistent:</p>
+<section id="specify-the-desired-output-format" class="level2">
+<h2 class="anchored" data-anchor-id="specify-the-desired-output-format">Specify the desired output format</h2>
+<p>Precisely define your desired output format using JSON, XML, or custom templates so that Claude understands every output formatting element you require.</p>
+<section title="Example: Standardizing customer feedback">
+<pre><code>| Role | Content |
+| ---- | ------- |
+| User | You're a Customer Insights AI. Analyze this feedback and output in JSON format with keys: "sentiment" (positive/negative/neutral), "key_issues" (list), and "action_items" (list of dicts with "team" and "task").&lt;br/&gt;&lt;br/&gt;"I've been a loyal user for 3 years, but the recent UI update is a disaster. Finding basic features is now a scavenger hunt. Plus, the new 'premium' pricing is outrageous. I'm considering switching unless this is fixed ASAP." |
+| Assistant | \{&lt;br/&gt;  "sentiment": "negative",&lt;br/&gt;  "key_issues": [&lt;br/&gt;    "Poor UI/UX in recent update",&lt;br/&gt;    "Difficulty finding basic features",&lt;br/&gt;    "Perceived high pricing (new 'premium' tier)"&lt;br/&gt;  ],&lt;br/&gt;  "action_items": [&lt;br/&gt;    \{&lt;br/&gt;      "team": "Product",&lt;br/&gt;      "task": "Conduct usability testing and iterate on UI based on findings"&lt;br/&gt;    \},&lt;br/&gt;    \{&lt;br/&gt;      "team": "UX",&lt;br/&gt;      "task": "Create a feature discovery guide or onboarding flow"&lt;br/&gt;    \},&lt;br/&gt;    \{&lt;br/&gt;      "team": "Marketing",&lt;br/&gt;      "task": "Review pricing strategy and communicate value proposition"&lt;br/&gt;    },&lt;br/&gt;    \{&lt;br/&gt;      "team": "Customer Success",&lt;br/&gt;      "task": "Reach out to user, offer concessions to prevent churn"&lt;br/&gt;    \}&lt;br/&gt;  ]&lt;br/&gt;\} |</code></pre>
+</section>
+</section>
+<section id="constrain-with-examples" class="level2">
+<h2 class="anchored" data-anchor-id="constrain-with-examples">Constrain with examples</h2>
+<p>Provide examples of your desired output. This trains Claude’s understanding better than abstract instructions.</p>
+<section title="Example: Generating consistent market intelligence">
+<pre><code>| Role | Content |
+| ---- | ------- |
+| User | As a Market Intelligence AI, your task is to analyze data about our competitors. Here is our competitor data:&lt;br/&gt;\&lt;data&gt;&lt;br/&gt;\{\{DATA}}&lt;br/&gt;\&lt;/data&gt;&lt;br/&gt;&lt;br/&gt;Output following this example format:&lt;br/&gt;&lt;br/&gt;\&lt;competitor&gt;&lt;br/&gt;  \&lt;name&gt;Rival Inc\&lt;/name&gt;&lt;br/&gt;  \&lt;overview&gt;A 50-word summary.\&lt;/overview&gt;&lt;br/&gt;  \&lt;swot&gt;&lt;br/&gt;    \&lt;strengths&gt;- Bullet points\&lt;/strengths&gt;&lt;br/&gt;    \&lt;weaknesses&gt;- Bullet points\&lt;/weaknesses&gt;&lt;br/&gt;    \&lt;opportunities&gt;- Bullet points\&lt;/opportunities&gt;&lt;br/&gt;    \&lt;threats&gt;- Bullet points\&lt;/threats&gt;&lt;br/&gt;  \&lt;/swot&gt;&lt;br/&gt;  \&lt;strategy&gt;A 30-word strategic response.\&lt;/strategy&gt;&lt;br/&gt;\&lt;/competitor&gt;&lt;br/&gt;&lt;br/&gt;Now, analyze AcmeGiant and AcmeDataCo using this format. |
+| Assistant | \&lt;competitor&gt;&lt;br/&gt;  \&lt;name&gt;AcmeGiant\&lt;/name&gt;&lt;br/&gt;  \&lt;overview&gt;Global tech leader with a vast ecosystem of consumer and enterprise products. Known for innovation, strong brand, and deep customer lock-in through integrated hardware, software, and services.\&lt;/overview&gt;&lt;br/&gt;  \&lt;swot&gt;&lt;br/&gt;    \&lt;strengths&gt;&lt;br/&gt;      - Massive R\&amp;D budget fuels continuous innovation&lt;br/&gt;      - Loyal customer base and powerful brand recognition&lt;br/&gt;      - Synergistic product ecosystem increases switching costs&lt;br/&gt;    \&lt;/strengths&gt;&lt;br/&gt;    \&lt;weaknesses&gt;&lt;br/&gt;      - High prices may deter cost-sensitive customers&lt;br/&gt;      - Slow to address enterprise-specific customization needs&lt;br/&gt;      - Privacy concerns and regulatory scrutiny in multiple markets&lt;br/&gt;    \&lt;/weaknesses&gt;&lt;br/&gt;    \&lt;opportunities&gt;&lt;br/&gt;      - Growing demand for AI and ML capabilities&lt;br/&gt;      - Expansion into emerging markets&lt;br/&gt;      - Acquisitions to fill product or talent gaps&lt;br/&gt;    \&lt;/opportunities&gt;&lt;br/&gt;    \&lt;threats&gt;&lt;br/&gt;      - Rapid rise of cloud-native competitors&lt;br/&gt;      - Antitrust lawsuits and regulatory actions&lt;br/&gt;      - Talent poaching by startups and competitors&lt;br/&gt;    \&lt;/threats&gt;&lt;br/&gt;  \&lt;/swot&gt;&lt;br/&gt;  \&lt;strategy&gt;Focus on our agility and customization. Target TechGiant's slow enterprise response and privacy issues in our marketing.\&lt;/strategy&gt;&lt;br/&gt;\&lt;/competitor&gt;&lt;br/&gt;&lt;br/&gt;\&lt;competitor&gt;&lt;br/&gt;  \&lt;name&gt;AcmeDataCo\&lt;/name&gt;&lt;br/&gt;  \&lt;overview&gt;Rising star in data analytics and visualization. Offers intuitive, self-service BI tools with a freemium model, appealing to startups and enterprise teams alike.\&lt;/overview&gt;&lt;br/&gt;  \&lt;swot&gt;&lt;br/&gt;    \&lt;strengths&gt;&lt;br/&gt;      - User-friendly interface reduces need for specialized training&lt;br/&gt;      - Freemium model lowers barrier to entry, drives viral growth&lt;br/&gt;      - Strong product-market fit with rise of data-driven decisions&lt;br/&gt;    \&lt;/strengths&gt;&lt;br/&gt;    \&lt;weaknesses&gt;&lt;br/&gt;      - Limited advanced analytics compared to established BI tools&lt;br/&gt;      - Scaling issues reported with very large datasets&lt;br/&gt;      - Dependent on third-party cloud infrastructure (AWS)&lt;br/&gt;    \&lt;/weaknesses&gt;&lt;br/&gt;    \&lt;opportunities&gt;&lt;br/&gt;      - Expanding into predictive analytics and AI-driven insights&lt;br/&gt;      - Forming strategic alliances with complementary tech vendors&lt;br/&gt;      - Customizable dashboards for industry-specific solutions&lt;br/&gt;    \&lt;/opportunities&gt;&lt;br/&gt;    \&lt;threats&gt;&lt;br/&gt;      - Market saturation; many new entrants in self-service BI&lt;br/&gt;      - Enterprise BI giants developing more user-friendly tools&lt;br/&gt;      - Data privacy regulations increasing compliance complexity&lt;br/&gt;    \&lt;/threats&gt;&lt;br/&gt;  \&lt;/swot&gt;&lt;br/&gt;  \&lt;strategy&gt;Highlight our robust enterprise features and data governance. Target accounts struggling with DataCo's scale limitations.\&lt;/strategy&gt;&lt;br/&gt;\&lt;/competitor&gt; |</code></pre>
+</section>
+</section>
+<section id="use-retrieval-for-contextual-consistency" class="level2">
+<h2 class="anchored" data-anchor-id="use-retrieval-for-contextual-consistency">Use retrieval for contextual consistency</h2>
+<p>For tasks requiring consistent context (e.g., chatbots, knowledge bases), use retrieval to ground Claude’s responses in a fixed information set.</p>
+<section title="Example: Enhancing IT support consistency">
+<pre><code>| Role | Content |
+| ---- | ------- |
+| User | You're our IT Support AI that draws on knowledge base data. Here are entries from your knowledge base:&lt;br/&gt;&lt;br/&gt;\&lt;kb&gt;&lt;br/&gt;  \&lt;entry&gt;&lt;br/&gt;    \&lt;id&gt;1\&lt;/id&gt;&lt;br/&gt;    \&lt;title&gt;Reset Active Directory password\&lt;/title&gt;&lt;br/&gt;    \&lt;content&gt;1. Go to password.ourcompany.com&lt;br/&gt;2. Enter your username&lt;br/&gt;3. Click "Forgot Password"&lt;br/&gt;4. Follow email instructions\&lt;/content&gt;&lt;br/&gt;  \&lt;/entry&gt;&lt;br/&gt;  \&lt;entry&gt;&lt;br/&gt;    \&lt;id&gt;2\&lt;/id&gt;&lt;br/&gt;    \&lt;title&gt;Connect to VPN\&lt;/title&gt;&lt;br/&gt;    \&lt;content&gt;1. Install GlobalProtect from software center&lt;br/&gt;2. Open GlobalProtect, enter "vpn.ourcompany.com"&lt;br/&gt;3. Use AD credentials to log in\&lt;/content&gt;&lt;br/&gt;  \&lt;/entry&gt;&lt;br/&gt;\&lt;/kb&gt;&lt;br/&gt;&lt;br/&gt;When helping users, always check the knowledge base first. Respond in this format:&lt;br/&gt;&lt;br/&gt;\&lt;response&gt;&lt;br/&gt;  \&lt;kb_entry&gt;Knowledge base entry used\&lt;/kb_entry&gt;&lt;br/&gt;  \&lt;answer&gt;Your response\&lt;/answer&gt;&lt;br/&gt;\&lt;/response&gt; Write some test questions for yourself and answer them using the knowledge base, just to make sure you understand how to use the knowledge base properly. |
+| Assistant | Understood. I'll use the knowledge base for consistent responses. Let's test with a couple of scenarios.&lt;br/&gt;&lt;br/&gt;User: Hey, I can't log into my email. I think I forgot my password.&lt;br/&gt;&lt;br/&gt;\&lt;response&gt;&lt;br/&gt;  \&lt;kb_entry&gt;1: Reset Active Directory password\&lt;/entry&gt;&lt;br/&gt;  \&lt;answer&gt;I understand you're having trouble logging into your email due to a forgotten password. No worries, this is a common issue. To reset your Active Directory password, which is used for email access, follow these steps:&lt;br/&gt;&lt;br/&gt;1. Go to password.ourcompany.com&lt;br/&gt;2. Enter your username (same as your email address)&lt;br/&gt;3. Click on the "Forgot Password" link&lt;br/&gt;4. You'll receive an email with instructions. Follow them to reset your password.&lt;br/&gt;&lt;br/&gt;After resetting, you should be able to log into your email. Let me know if you need any further assistance.\&lt;/answer&gt;&lt;br/&gt;\&lt;/response&gt;&lt;br/&gt;&lt;br/&gt;User: I'm working from home today. How do I access internal resources?&lt;br/&gt;&lt;br/&gt;\&lt;response&gt;&lt;br/&gt;  \&lt;kb_entry&gt;2: Connect to VPN\&lt;/entry&gt;&lt;br/&gt;  \&lt;answer&gt;Great question! To access internal resources while working from home, you'll need to connect to our company VPN (Virtual Private Network). Here's how to set that up:&lt;br/&gt;&lt;br/&gt;1. First, install the GlobalProtect VPN client. You can find this in our software center.&lt;br/&gt;2. Once installed, open the GlobalProtect application.&lt;br/&gt;3. In the server field, enter "vpn.ourcompany.com".&lt;br/&gt;4. Use your Active Directory (AD) credentials to log in - the same username and password you use for your email.&lt;br/&gt;&lt;br/&gt;Once connected, you'll have secure access to all internal resources as if you were in the office. Let me know if you run into any issues during setup.\&lt;/answer&gt;&lt;br/&gt;\&lt;/response&gt; |</code></pre>
+</section>
+</section>
+<section id="chain-prompts-for-complex-tasks" class="level2">
+<h2 class="anchored" data-anchor-id="chain-prompts-for-complex-tasks">Chain prompts for complex tasks</h2>
+<p>Break down complex tasks into smaller, consistent subtasks. Each subtask gets Claude’s full attention, reducing inconsistency errors across scaled workflows.</p>
+</section>
+<section id="keep-claude-in-character" class="level2">
+<h2 class="anchored" data-anchor-id="keep-claude-in-character">Keep Claude in character</h2>
+<p>For role-based applications, maintaining consistent character requires deliberate prompting.</p>
+<ul>
+<li><strong>Use system prompts to set the role:</strong> Use <a href="./docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role">system prompts</a> to define Claude’s role and personality. This sets a strong foundation for consistent responses.
+<tip>
+When setting up the character, provide detailed information about the personality, background, and any specific traits or quirks. This will help the model better emulate and generalize the character’s traits.
+</tip></li>
+<li><strong>Prepare Claude for possible scenarios:</strong> Provide a list of common scenarios and expected responses in your prompts. This “trains” Claude to handle diverse situations without breaking character.</li>
+</ul>
+<section title="Example: Enterprise chatbot for role prompting">
+<pre><code>| Role | Content |
+| ---- | ------- |
+| System | You are AcmeBot, the enterprise-grade AI assistant for AcmeTechCo. Your role:&lt;br/&gt;    - Analyze technical documents (TDDs, PRDs, RFCs)&lt;br/&gt;    - Provide actionable insights for engineering, product, and ops teams&lt;br/&gt;    - Maintain a professional, concise tone |
+| User | Here is the user query for you to respond to:&lt;br/&gt;\&lt;user_query&gt;&lt;br/&gt;\{\{USER_QUERY}}&lt;br/&gt;\&lt;/user_query&gt;&lt;br/&gt;&lt;br/&gt;Your rules for interaction are:&lt;br/&gt;    - Always reference AcmeTechCo standards or industry best practices&lt;br/&gt;    - If unsure, ask for clarification before proceeding&lt;br/&gt;    - Never disclose confidential AcmeTechCo information.&lt;br/&gt;&lt;br/&gt;As AcmeBot, you should handle situations along these guidelines:&lt;br/&gt;    - If asked about AcmeTechCo IP: "I cannot disclose TechCo's proprietary information."&lt;br/&gt;    - If questioned on best practices: "Per ISO/IEC 25010, we prioritize..."&lt;br/&gt;    - If unclear on a doc: "To ensure accuracy, please clarify section 3.2..." |</code></pre>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -67,9 +67,9 @@ Source: <https://cirosantilli.com/markdown-style-guide/>
 
 - Surround with one blank line
 - Don't indent tables
-- Surround every row with pipes `|`
-- Align border pipes vertically
-- Column width matches longest cell
+- Surround every row with leading and trailing pipes `|`
+- Do NOT pad or align columns — use compact style with minimal spacing
+- Do NOT align delimiter pipes vertically
 
 ## Links
 
