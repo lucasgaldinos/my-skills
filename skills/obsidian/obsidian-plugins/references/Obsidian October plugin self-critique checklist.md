@@ -18,7 +18,7 @@ aliases:
 - [ ] Don't provide default hotkeys for commands. [Learn more](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#Avoid+setting+a+default+hotkey+for+commands).
 - [ ] Don't override core styling. If needed, add your own class and make the styling only apply to your class.
 - [ ] Do scan your code for deprecated methods (they usually show up as strikeout text in IDEs).
-- [ ] Don't assign styles via JavaScript or in HTML. [Learn more](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#No+hardcoded+styling).
+- [ ] Don't assign styles via javascript or in HTML. [Learn more](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#No+hardcoded+styling).
 - [ ] Don't access the hardcoded `.obsidian` folder if you need to access the configuration directory. The location could be customized, so please use `Vault.configDir` instead.
 
 ## Mobile support
@@ -44,7 +44,7 @@ Complete this section if you have `isDesktopOnly` set to false in your manifest.
 ## Security
 
 - [ ] Do [disclose relevant information](https://docs.obsidian.md/Developer+policies#Disclosures) in your README file (payments, account requirements, network use, external file access, ads, telemetry with privacy policy, closed source code).
-- [ ] Do be mindful of all dependencies you add to your plugin. Remember that [less is safer](https://obsidian.md/blog/less-is-safer/). 
+- [ ] Do be mindful of all dependencies you add to your plugin. Remember that [less is safer](https://obsidian.md/blog/less-is-safer/).
 - [ ] Do not include any client-side telemetry. Libraries that offer usage tracking and metrics will often collect information that users could consider sensitive.
 - [ ] Do commit and use a lock file (package-lock.json, pnpm-lock.yaml, or yarn.lock) when using a package manager (npm, pnpm, or yarn).
 
@@ -56,7 +56,6 @@ Complete this section if you have `isDesktopOnly` set to false in your manifest.
 - [ ] Don't use the `Adapter` API whenever possible. Use `Vault` API instead. [Learn more](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#Prefer+the+Vault+API+over+the+Adapter+API).
 - [ ] Don't manage reading and write plugin data yourself. Use `Plugin.loadData()` and `Plugin.saveData()` instead.
 - [ ] Do use `normalizePath()` if you take user defined paths. [Learn more](https://docs.obsidian.md/Reference/TypeScript+API/normalizePath).
-
 
 ## Performance
 

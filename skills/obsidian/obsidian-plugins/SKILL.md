@@ -251,9 +251,26 @@ prompt
 `references/Plugins/Releasing/Submission requirements for plugins.md` →
 `references/Plugins/Releasing/Plugin guidelines.md` →
 `references/Plugins/Releasing/Submit your plugin.md` →
-`references/Plugins/Releasing/Release your plugin with GitHub Actions.md` →
-`references/Obsidian October plugin self-critique checklist.md`
+`references/Plugins/Releasing/Release your plugin with GitHub Actions.md`
 </read>
+</route>
+
+<route name="pre-finish-plugin">
+
+prompt
+: **Before finishing a plugin** — run through `references/Obsidian October plugin self-critique checklist.md`. Covers releasing/naming, compatibility, mobile support, coding style, security, API usage, and performance. Every item is a common rejection reason.
+</route>
+
+<route name="pre-finish-theme">
+
+prompt
+: **Before finishing a theme** — run through `references/Obsidian October theme self-critique checklist.md`. Covers CSS variable usage, performance (`:has()` pitfalls), asset bundling, licensing, screenshots, and naming.
+</route>
+
+<route name="pre-finish-vault">
+
+prompt
+: **Before finishing a vault tool / organization workflow** — consult `references/Obsidian October vault self-critique checklist.md` for vault maintenance, orphan notes, broken links, properties cleanup, and backup verification.
 </route>
 
 <route name="load-time">
@@ -438,8 +455,25 @@ prompt
 <workflow name="release">
 
 prompt
-: **Prepare for release:**
-`references/Developer policies.md` → `references/Plugins/Releasing/Submission requirements for plugins.md` → `references/Plugins/Releasing/Plugin guidelines.md` → `references/Obsidian October plugin self-critique checklist.md` → `references/Plugins/Releasing/Submit your plugin.md` → `references/Plugins/Releasing/Release your plugin with GitHub Actions.md`
+: **Prepare for release:** `references/Developer policies.md` → `references/Plugins/Releasing/Submission requirements for plugins.md` → `references/Plugins/Releasing/Plugin guidelines.md` → `references/Obsidian October plugin self-critique checklist.md` → `references/Plugins/Releasing/Submit your plugin.md` → `references/Plugins/Releasing/Release your plugin with GitHub Actions.md`
+</workflow>
+
+<workflow name="pre-finish-plugin">
+
+prompt
+: **Before finishing a plugin** — read `references/Obsidian October plugin self-critique checklist.md` and verify every item. Covers: releasing/naming, compatibility, mobile, coding style, security, API usage, performance, UI text. Do this before considering the plugin done.
+</workflow>
+
+<workflow name="pre-finish-theme">
+
+prompt
+: **Before finishing a theme** — read `references/Obsidian October theme self-critique checklist.md` and verify every item. Covers: CSS variables, performance (`:has()` pitfalls), local assets, screenshots, licensing, naming.
+</workflow>
+
+<workflow name="pre-finish-vault">
+
+prompt
+: **Before finishing a vault organization tool or workflow** — consult `references/Obsidian October vault self-critique checklist.md` for vault maintenance, orphan notes, broken links, properties, backup verification, and rediscovery ideas.
 </workflow>
 
 ---
