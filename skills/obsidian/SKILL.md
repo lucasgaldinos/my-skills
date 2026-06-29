@@ -50,6 +50,9 @@ Match the user's intent to exactly one route in the table below. Load the linked
 <routing>
 
 <route name="mcpvault">
+
+### mcp-vault
+
 <when>
 
 User wants vault CRUD, search, tags, frontmatter, or git sync **AND the Obsidian MCP server is
@@ -70,6 +73,9 @@ when MCP is active — these require the running Obsidian app.
 </route>
 
 <route name="obsidian-cli">
+
+### obisdian-cli
+
 <when>
 
 User wants to interact with a **running Obsidian app instance**, OR the MCP server is not active.
@@ -77,7 +83,7 @@ User wants to interact with a **running Obsidian app instance**, OR the MCP serv
 <keywords>
 
 open note in Obsidian, obsidian CLI, backlinks, unresolved links, reload plugin, debug
-plugin, debug theme, screenshot Obsidian, eval JavaScript in Obsidian, daily note app,
+plugin, debug theme, screenshot Obsidian, eval javascript in Obsidian, daily note app,
 obsidian command</keywords>
 <load>
 
@@ -90,6 +96,9 @@ unavailable.
 </route>
 
 <route name="obsidian-bases">
+
+### obsidian-bases
+
 <when>
 
 User wants to create or edit a `.base` file — YAML-configured database-like views over notes.
@@ -109,6 +118,9 @@ says "canvas" instead of "base", route to `json-canvas`.
 </route>
 
 <route name="json-canvas">
+
+### json-canvas
+
 <when>
 
 User wants to create or edit a `.canvas` file — visual mind maps, flowcharts, or node/edge graphs.
@@ -128,6 +140,9 @@ user says "base" instead of "canvas", route to `obsidian-bases`.
 </route>
 
 <route name="obsidian-markdown">
+
+### obsidian-markdown
+
 <when>
 
 User wants to **author or format content** inside an Obsidian note — not vault operations.
@@ -147,6 +162,9 @@ notes in the vault.
 </route>
 
 <route name="obsidian-clipper-template-creator">
+
+### obsidian-clipper-template-creator
+
 <when>
 
 User wants to create a **Web Clipper JSON template** to clip a specific website into Obsidian.
@@ -166,6 +184,9 @@ Use `defuddle` first if you need to analyze the target page structure.
 </route>
 
 <route name="defuddle">
+
+### defuddle
+
 <when>
 
 User wants to extract or read content from a web URL (not a `.md` file).
@@ -183,6 +204,28 @@ Do NOT use for `.md` URLs — those are already Markdown; use WebFetch directly.
 step before creating a clipper template or saving a clipped note to vault.
 </note>
 </route>
+
+<route name="obsidian-plugins">
+
+### obsidian-plugins
+
+<when>
+
+user wants to create a new extension for obsidian,
+</when>
+
+<keywords>
+
+extension, extension setup, features, extending obsidian.
+</keywords>
+
+<load>
+
+[obsidian-plugins](./obsidian-plugins/SKILL.md)</load>
+
+<note>
+
+Use when the user is developing some type of extension for obsidian.
 
 </routing>
 
